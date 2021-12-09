@@ -40,7 +40,6 @@ body { font-family: 'Courier New', Courier, monospace; }
 }
 
 #snake {
-    width: 80px;
     height: 5px;
     display: flex;
     font-size: 0;

@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(event) {
     const snakeContainerDimensions = {width: 1000, height: 500};
-    const snakeSize = {width: 80, height: 5};
     const snakePartSize = {width: 5, height: 5};
     const positionIncrement = 5;
     const directions = ["left", "right", "up", "down"];
@@ -52,11 +51,12 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     let interval = setInterval(function() {
-        snakeParts = snake.querySelectorAll("li");
         if(checkCollisionWithFood()) {
             setNewFood();
             scoreHTML.innerHTML = `<small>Score: </small> ${++score}`;
+            increaseSnakeSize();
         }
+        snakeParts = snake.querySelectorAll("li");
         for(i = snakeParts.length - 1; i >= 0; i--) {
             if(i == 0) {
                 if(currentDirection == "right") {
@@ -119,5 +119,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
                 return false;
         }
         return true;
+    }
+
+    function increaseSnakeSize() {
+        let lis = [], number = 4;
+        for(let i = 1; i <= number; i++) {
+            lis[i] = document.createElement("li");
+            lis[i].innerText = snakeParts.length + i;
+            snake.appendChild(lis[i]);
+        }
     }
 });
