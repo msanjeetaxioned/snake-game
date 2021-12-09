@@ -41,14 +41,14 @@ body { font-family: 'Courier New', Courier, monospace; }
 
 #snake {
     width: 80px;
-    height: 10px;
+    height: 5px;
     display: flex;
     font-size: 0;
 }
 
 #snake > li {
-    width: 10px;
-    height: 10px;
+    width: 5px;
+    height: 5px;
     position: absolute;
     background: #008000;
     font-size: 0;

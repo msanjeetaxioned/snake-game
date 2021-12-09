@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function(event) {
     const snakeContainerDimensions = {width: 1000, height: 500};
-    const snakeSize = {width: 80, height: 10};
-    const snakePartSize = {width: 10, height: 10};
-    const positionIncrement = 10;
+    const snakeSize = {width: 80, height: 5};
+    const snakePartSize = {width: 5, height: 5};
+    const positionIncrement = 5;
     const directions = ["left", "right", "up", "down"];
     let currentDirection = "right";
     let startPos = {top: 200, left: 0};
@@ -10,8 +10,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const mainContainer = document.querySelector("#main-container");
     const snakeContainer = mainContainer.querySelector("#snake-game-container");
     const snake = snakeContainer.querySelector("#snake");
-    const snakeParts = snake.querySelectorAll("li");
     const food = snakeContainer.querySelector("#food");
+
+    let snakeParts = snake.querySelectorAll("li");
 
     document.addEventListener("keydown", function(event) {
         switch(event.key) {
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     let interval = setInterval(function() {
+        snakeParts = snake.querySelectorAll("li");
         for(i = snakeParts.length - 1; i >= 0; i--) {
             if(i == 0) {
                 if(currentDirection == "right") {
@@ -85,5 +87,5 @@ document.addEventListener('DOMContentLoaded', function(event) {
                 snakeParts[i].style.top = snakeParts[i-1].style.top;
             }
         }
-    }, 50);
+    }, 40);
 });
