@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const startPos = {top: 200, left: 0};
 
     let score = 0;
-
     let currentDirection = "right";
 
     const mainContainer = document.querySelector("#main-container");
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const scoreHTML = stats.querySelectorAll("span")[1];
     
     let food = snakeContainer.querySelector("#food");
-    setNewFood(false);
+    setNewFood();
     
     let snakeParts = snake.querySelectorAll("li");
 
@@ -55,7 +54,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
     let interval = setInterval(function() {
         snakeParts = snake.querySelectorAll("li");
         if(checkCollisionWithFood()) {
-            setNewFood(true);
+            setNewFood();
+            scoreHTML.innerHTML = `<small>Score: </small> ${++score}`;
         }
         for(i = snakeParts.length - 1; i >= 0; i--) {
             if(i == 0) {
@@ -99,17 +99,13 @@ document.addEventListener('DOMContentLoaded', function(event) {
         }
     }, 40);
 
-    function getRoundInteger(min, max) {
+    function getRandomIntegerBetweenMixAndMax(min, max) {
         return Math.floor(Math.random() * (max - min + 1) ) + min;
     }
 
-    function setNewFood(updateScore) {
-        food.style.top = getRoundInteger(0, snakeContainerDimensions.height-positionIncrement) + "px";
-        food.style.left = getRoundInteger(0, snakeContainerDimensions.width-positionIncrement) + "px";
-        if(updateScore) {
-            ++score;
-        }
-        scoreHTML.innerHTML = `<small>Score: </small> ${score}`;
+    function setNewFood() {
+        food.style.top = getRandomIntegerBetweenMixAndMax(0, snakeContainerDimensions.height-positionIncrement) + "px";
+        food.style.left = getRandomIntegerBetweenMixAndMax(0, snakeContainerDimensions.width-positionIncrement) + "px";
     }
 
     function checkCollisionWithFood() {
