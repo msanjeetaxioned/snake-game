@@ -58,8 +58,6 @@ body { font-family: 'Courier New', Courier, monospace; }
     width: 10px;
     height: 10px;
     position: absolute;
-    top: 10%;
-    left: 20%;
     background: #ff0000;
     font-size: 0;
 }

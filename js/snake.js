@@ -4,14 +4,21 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const snakePartSize = {width: 5, height: 5};
     const positionIncrement = 5;
     const directions = ["left", "right", "up", "down"];
+    const startPos = {top: 200, left: 0};
+
+    let score = 0;
+
     let currentDirection = "right";
-    let startPos = {top: 200, left: 0};
 
     const mainContainer = document.querySelector("#main-container");
     const snakeContainer = mainContainer.querySelector("#snake-game-container");
     const snake = snakeContainer.querySelector("#snake");
-    const food = snakeContainer.querySelector("#food");
-
+    const stats = mainContainer.querySelector(".stats");
+    const scoreHTML = stats.querySelectorAll("span")[1];
+    
+    let food = snakeContainer.querySelector("#food");
+    setNewFood(false);
+    
     let snakeParts = snake.querySelectorAll("li");
 
     document.addEventListener("keydown", function(event) {
@@ -47,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     let interval = setInterval(function() {
         snakeParts = snake.querySelectorAll("li");
+        if(checkCollisionWithFood()) {
+            setNewFood(true);
+        }
         for(i = snakeParts.length - 1; i >= 0; i--) {
             if(i == 0) {
                 if(currentDirection == "right") {
@@ -88,4 +98,30 @@ document.addEventListener('DOMContentLoaded', function(event) {
             }
         }
     }, 40);
+
+    function getRoundInteger(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) ) + min;
+    }
+
+    function setNewFood(updateScore) {
+        food.style.top = getRoundInteger(0, snakeContainerDimensions.height-positionIncrement) + "px";
+        food.style.left = getRoundInteger(0, snakeContainerDimensions.width-positionIncrement) + "px";
+        if(updateScore) {
+            ++score;
+        }
+        scoreHTML.innerHTML = `<small>Score: </small> ${score}`;
+    }
+
+    function checkCollisionWithFood() {
+        let snakeStartRect = snakeParts[0].getBoundingClientRect();
+        let foodRect = food.getBoundingClientRect();
+
+        if( ((snakeStartRect.top + snakeStartRect.height) < (foodRect.top)) ||
+            (snakeStartRect.top > (foodRect.top + foodRect.height)) ||
+            ((snakeStartRect.left + snakeStartRect.width) < foodRect.left) ||
+            (snakeStartRect.left > (foodRect.left + foodRect.width)) ) {
+                return false;
+        }
+        return true;
+    }
 });
