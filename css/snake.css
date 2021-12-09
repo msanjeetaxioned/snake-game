@@ -1,0 +1,59 @@
+* { box-sizing: border-box; }
+body { font-family: 'Courier New', Courier, monospace; }
+
+#main-container {
+    width: 304px;
+    margin: 20px auto;
+}
+
+.title { margin-bottom: 15px; }
+
+.title > h1 {
+    margin-bottom: 10px;
+    color: #000;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.title > .stats { text-align: center; }
+
+.title span {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.title span > small {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+#snake-game-container {
+    width: 304px;
+    height: 604px;
+    border: 2px solid black;
+    position: relative;
+    background: #d3d3d3;
+}
+
+#snake {
+    width: 30px;
+    height: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: #008000;
+    font-size: 0;
+}
+
+#food {
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    top: 10%;
+    left: 20%;
+    background: #ff0000;
+    font-size: 0;
+}
