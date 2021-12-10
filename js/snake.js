@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(event) {
     const snakeContainerDimensions = {width: 1000, height: 500};
     const snakePartSize = {width: 5, height: 5};
+    const foodSize = 10;
     const positionIncrement = 5;
     const directions = ["left", "right", "up", "down"];
     const startPos = {top: 200, left: 0};
@@ -12,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const snakeContainer = mainContainer.querySelector("#snake-game-container");
     const snake = snakeContainer.querySelector("#snake");
     const stats = mainContainer.querySelector(".stats");
-    const scoreHTML = stats.querySelectorAll("span")[1];
+    const currentScoreHTML = stats.querySelectorAll("span")[0];
     
     let food = snakeContainer.querySelector("#food");
     setNewFood();
@@ -53,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     let interval = setInterval(function() {
         if(checkCollisionWithFood()) {
             setNewFood();
-            scoreHTML.innerHTML = `<small>Score: </small> ${++score}`;
+            currentScoreHTML.innerHTML = `<small>Current Score: </small> ${++score}`;
             increaseSnakeSize();
         }
         snakeParts = snake.querySelectorAll("li");
@@ -104,8 +105,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     function setNewFood() {
-        food.style.top = getRandomIntegerBetweenMixAndMax(0, snakeContainerDimensions.height-positionIncrement) + "px";
-        food.style.left = getRandomIntegerBetweenMixAndMax(0, snakeContainerDimensions.width-positionIncrement) + "px";
+        food.style.top = getRandomIntegerBetweenMixAndMax(0, snakeContainerDimensions.height-foodSize) + "px";
+        food.style.left = getRandomIntegerBetweenMixAndMax(0, snakeContainerDimensions.width-foodSize) + "px";
     }
 
     function checkCollisionWithFood() {
