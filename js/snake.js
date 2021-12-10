@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const highScoreHTML = stats.querySelectorAll("span")[1]; // Show High Score
     highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
     
-    let food = snakeContainer.querySelector("#food");   
+    let food = snakeContainer.querySelector("#food"); 
     let snakeParts = snake.querySelectorAll("li");
     const originalSnakeBackup = snakeParts;
 
@@ -87,7 +87,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
                         highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
                         localStorage.setItem("snake-game-high-score", highScore);
                     }
-                    showOrHideModal(true, false); // No New High Score
+                    else {
+                        showOrHideModal(true, false); // No New High Score
+                    }
+                    break;
                 }
             }
             if(checkCollisionWithFood()) { // Check Collision with Food
