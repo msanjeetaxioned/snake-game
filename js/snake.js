@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const messages = ["Nice Try!", "Congrats!! You now have a new High Score!!"];
 
     let score;
+    //localStorage.setItem("snake-game-high-score", 0);
     let highScore = localStorage.getItem("snake-game-high-score") ? parseInt(localStorage.getItem("snake-game-high-score")) : 0; // Get High Score if it exists in Local Storage
     let currentDirection;
 
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     else {
                         showOrHideModal(true, false); // No New High Score
                     }
-                    break;
+                    return;
                 }
             }
             if(checkCollisionWithFood()) { // Check Collision with Food
