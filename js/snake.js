@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
             for(let i = snakeParts.length - 1; i >= 0; i--) {
                 if(i == 0) {
                     if(currentDirection == "right") {
-                        if(parseInt(snakeParts[i].style.left) + positionIncrement >= snakeContainerDimensions.width) {
+                        if(parseInt(snakeParts[i].style.left) >= (snakeContainerDimensions.width - snakePartSize.width)) {
                             snakeParts[i].style.left = "0px";
                         }
                         else {
