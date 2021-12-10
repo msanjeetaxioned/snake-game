@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const startPos = {top: 200, left: 0};
 
     let score = 0;
-    let highScore = localStorage.getItem("snake-game-high-score") ? parseInt(localStorage.getItem("snake-game-high-score")) : 0;
+    let highScore = localStorage.getItem("snake-game-high-score") ? parseInt(localStorage.getItem("snake-game-high-score")) : 0; // Get High Score if it exists in Local Storage
     let currentDirection = "right";
 
     const mainContainer = document.querySelector("#main-container");
@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const snake = snakeContainer.querySelector("#snake");
     const stats = mainContainer.querySelector(".stats");
     const currentScoreHTML = stats.querySelectorAll("span")[0];
-    const highScoreHTML = stats.querySelectorAll("span")[1];
 
+    const highScoreHTML = stats.querySelectorAll("span")[1]; // Show High Score
     highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
     
     let food = snakeContainer.querySelector("#food");
