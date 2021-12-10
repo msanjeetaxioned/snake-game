@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     startGame(false);
 
+    // Start Game: Initializes game and Starts or Resets it based on Parameter passed.
     function startGame(restart) {
         if(restart) {
             snake.innerHTML = "";
@@ -86,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
                         highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
                         localStorage.setItem("snake-game-high-score", highScore);
                     }
-                    showOrHideModal(true, false);
+                    showOrHideModal(true, false); // No New High Score
                 }
             }
             if(checkCollisionWithFood()) { // Check Collision with Food
