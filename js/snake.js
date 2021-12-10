@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     let currentDirection;
 
     const modal = document.querySelector("#modal");
-    const restartButton = document.querySelector("#modal .restart-button > a");
+    const restartButton = document.querySelector("#modal .restart-button > button");
     const mainContainer = document.querySelector("#main-container");
     const snakeContainer = mainContainer.querySelector("#snake-game-container");
     const snake = snakeContainer.querySelector("#snake");
