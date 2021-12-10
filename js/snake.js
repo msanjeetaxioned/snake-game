@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const positionIncrement = 5;
     const directions = ["left", "right", "up", "down"];
     const startPos = {top: 200, left: 0};
-    const messages = ["Nice Try!", "Congrats!! You now have new High Score!!"];
+    const messages = ["Nice Try!", "Congrats!! You now have a new High Score!!"];
 
     let score;
     let highScore = localStorage.getItem("snake-game-high-score") ? parseInt(localStorage.getItem("snake-game-high-score")) : 0; // Get High Score if it exists in Local Storage
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     document.addEventListener("keydown", function(event) {
         switch(event.key) {
-            case "ArrowLeft": 
+            case "ArrowLeft":
                 if(currentDirection != "right" && currentDirection != "left") {
                     currentDirection = directions[0];
                 }
@@ -43,11 +43,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     currentDirection = directions[2];
                 }
                 break;
-            case "ArrowDown": 
-            if(currentDirection != "up" && currentDirection != "down") {
-                currentDirection = directions[3];
-            }
-            break;
+            case "ArrowDown":
+                if(currentDirection != "up" && currentDirection != "down") {
+                    currentDirection = directions[3];
+                }
+                break;
         }
     });
 
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     function getRandomIntegerBetweenMixAndMax(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) ) + min;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     function checkSnakeCollision(firstPart, secondPart) {
