@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const positionIncrement = 5;
     const directions = ["left", "right", "up", "down"];
     const startPos = {top: 200, left: 0};
-    const messages = ["Nice Try", "Congrats!! You now have new High Score!!"];
+    const messages = ["Nice Try!", "Congrats!! You now have new High Score!!"];
 
-    let score = 0;
+    let score;
     let highScore = localStorage.getItem("snake-game-high-score") ? parseInt(localStorage.getItem("snake-game-high-score")) : 0; // Get High Score if it exists in Local Storage
-    let currentDirection = "right";
+    let currentDirection;
 
     const modal = document.querySelector("#modal");
     const restartButton = document.querySelector("#modal .restart-button > a");
@@ -22,10 +22,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const highScoreHTML = stats.querySelectorAll("span")[1]; // Show High Score
     highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
     
-    let food = snakeContainer.querySelector("#food");
-    setNewFood();
-    
+    let food = snakeContainer.querySelector("#food");   
     let snakeParts = snake.querySelectorAll("li");
+    const originalSnakeBackup = snakeParts;
 
     document.addEventListener("keydown", function(event) {
         switch(event.key) {
@@ -52,76 +51,92 @@ document.addEventListener('DOMContentLoaded', function(event) {
         }
     });
 
-    // Set Individual Snake Parts Starting Position 
-    for(let i = 0; i < snakeParts.length; i++) {
-        snakeParts[i].style.left = startPos.left - snakePartSize.width * (i+1) + "px";
-        snakeParts[i].style.top = startPos.top + "px";
-    }
-
     restartButton.addEventListener("click", function() {
         showOrHideModal(false);
     });
 
-    let interval = setInterval(function() {
-        for(let i = 1; i < snakeParts.length; i++) { // Check Snake Collision
-            if(checkSnakeCollision(snakeParts[0], snakeParts[i])) {
-                clearInterval(interval);
-                if(score > highScore) {
-                    highScore = score;
-                    showOrHideModal(true, true); // New High Score
-                    highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
-                    localStorage.setItem("snake-game-high-score", highScore);
-                }
-                showOrHideModal(true, false);
+    startGame(false);
+
+    function startGame(restart) {
+        if(restart) {
+            snake.innerHTML = "";
+            for(let item of originalSnakeBackup) {
+                snake.append(item);
             }
+            snakeParts = snake.querySelectorAll("li");
         }
-        if(checkCollisionWithFood()) { // Check Collision with Food
-            setNewFood();
-            currentScoreHTML.innerHTML = `<small>Current Score: </small> ${++score}`;
-            increaseSnakeSize();
+        currentDirection = "right";
+        score = 0;
+        setNewFood();
+
+        // Set Individual Snake Parts Starting Position 
+        for(let i = 0; i < snakeParts.length; i++) {
+            snakeParts[i].style.left = startPos.left - snakePartSize.width * (i+1) + "px";
+            snakeParts[i].style.top = startPos.top + "px";
         }
-        snakeParts = snake.querySelectorAll("li");
-        for(let i = snakeParts.length - 1; i >= 0; i--) {
-            if(i == 0) {
-                if(currentDirection == "right") {
-                    if(parseInt(snakeParts[i].style.left) + positionIncrement >= snakeContainerDimensions.width) {
-                        snakeParts[i].style.left = "0px";
+
+        // Move Snake every 40ms
+        let interval = setInterval(function() {
+            for(let i = 1; i < snakeParts.length; i++) { // Check Snake Collision
+                if(checkSnakeCollision(snakeParts[0], snakeParts[i])) {
+                    clearInterval(interval);
+                    if(score > highScore) {
+                        highScore = score;
+                        showOrHideModal(true, true); // New High Score
+                        highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
+                        localStorage.setItem("snake-game-high-score", highScore);
                     }
-                    else {
-                        snakeParts[i].style.left = parseInt(snakeParts[i].style.left) + positionIncrement + "px";
-                    }
-                }
-                if(currentDirection == "left") {
-                    if(parseInt(snakeParts[i].style.left) <= 0) {
-                        snakeParts[i].style.left = snakeContainerDimensions.width - positionIncrement + "px";
-                    }
-                    else {
-                        snakeParts[i].style.left = parseInt(snakeParts[i].style.left) - positionIncrement + "px";
-                    }
-                }
-                else if(currentDirection == "up") {
-                    if(parseInt(snakeParts[i].style.top) <= 0) {
-                        snakeParts[i].style.top = snakeContainerDimensions.height - positionIncrement + "px";
-                    }
-                    else {
-                        snakeParts[i].style.top = parseInt(snakeParts[i].style.top) - positionIncrement + "px";
-                    }
-                }
-                else if(currentDirection == "down") {
-                    if(parseInt(snakeParts[i].style.top) >= snakeContainerDimensions.height) {
-                        snakeParts[i].style.top = "0px";
-                    }
-                    else {
-                        snakeParts[i].style.top = parseInt(snakeParts[i].style.top) + positionIncrement + "px";
-                    }
+                    showOrHideModal(true, false);
                 }
             }
-            else {
-                snakeParts[i].style.left = snakeParts[i-1].style.left;
-                snakeParts[i].style.top = snakeParts[i-1].style.top;
+            if(checkCollisionWithFood()) { // Check Collision with Food
+                setNewFood();
+                currentScoreHTML.innerHTML = `<small>Current Score: </small> ${++score}`;
+                increaseSnakeSize();
             }
-        }
-    }, 40);
+            snakeParts = snake.querySelectorAll("li");
+            for(let i = snakeParts.length - 1; i >= 0; i--) {
+                if(i == 0) {
+                    if(currentDirection == "right") {
+                        if(parseInt(snakeParts[i].style.left) + positionIncrement >= snakeContainerDimensions.width) {
+                            snakeParts[i].style.left = "0px";
+                        }
+                        else {
+                            snakeParts[i].style.left = parseInt(snakeParts[i].style.left) + positionIncrement + "px";
+                        }
+                    }
+                    if(currentDirection == "left") {
+                        if(parseInt(snakeParts[i].style.left) <= 0) {
+                            snakeParts[i].style.left = snakeContainerDimensions.width - positionIncrement + "px";
+                        }
+                        else {
+                            snakeParts[i].style.left = parseInt(snakeParts[i].style.left) - positionIncrement + "px";
+                        }
+                    }
+                    else if(currentDirection == "up") {
+                        if(parseInt(snakeParts[i].style.top) <= 0) {
+                            snakeParts[i].style.top = snakeContainerDimensions.height - positionIncrement + "px";
+                        }
+                        else {
+                            snakeParts[i].style.top = parseInt(snakeParts[i].style.top) - positionIncrement + "px";
+                        }
+                    }
+                    else if(currentDirection == "down") {
+                        if(parseInt(snakeParts[i].style.top) >= snakeContainerDimensions.height) {
+                            snakeParts[i].style.top = "0px";
+                        }
+                        else {
+                            snakeParts[i].style.top = parseInt(snakeParts[i].style.top) + positionIncrement + "px";
+                        }
+                    }
+                }
+                else {
+                    snakeParts[i].style.left = snakeParts[i-1].style.left;
+                    snakeParts[i].style.top = snakeParts[i-1].style.top;
+                }
+            }
+        }, 40);
+    }
 
     function getRandomIntegerBetweenMixAndMax(min, max) {
         return Math.floor(Math.random() * (max - min + 1) ) + min;
@@ -183,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
         else {
             modal.classList.add("display-none");
             mainContainer.classList.remove("opacity-low");
+            startGame(true);
         }
     }
 });
