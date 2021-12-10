@@ -5,11 +5,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const positionIncrement = 5;
     const directions = ["left", "right", "up", "down"];
     const startPos = {top: 200, left: 0};
+    const messages = ["Nice Try", "Congrats!! You now have new High Score!!"];
 
     let score = 0;
     let highScore = localStorage.getItem("snake-game-high-score") ? parseInt(localStorage.getItem("snake-game-high-score")) : 0; // Get High Score if it exists in Local Storage
     let currentDirection = "right";
 
+    const modal = document.querySelector("#modal");
+    const restartButton = document.querySelector("#modal .restart-button > a");
     const mainContainer = document.querySelector("#main-container");
     const snakeContainer = mainContainer.querySelector("#snake-game-container");
     const snake = snakeContainer.querySelector("#snake");
@@ -55,15 +58,21 @@ document.addEventListener('DOMContentLoaded', function(event) {
         snakeParts[i].style.top = startPos.top + "px";
     }
 
+    restartButton.addEventListener("click", function() {
+        showOrHideModal(false);
+    });
+
     let interval = setInterval(function() {
         for(let i = 1; i < snakeParts.length; i++) { // Check Snake Collision
             if(checkSnakeCollision(snakeParts[0], snakeParts[i])) {
                 clearInterval(interval);
                 if(score > highScore) {
                     highScore = score;
+                    showOrHideModal(true, true); // New High Score
                     highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
                     localStorage.setItem("snake-game-high-score", highScore);
                 }
+                showOrHideModal(true, false);
             }
         }
         if(checkCollisionWithFood()) { // Check Collision with Food
@@ -152,6 +161,28 @@ document.addEventListener('DOMContentLoaded', function(event) {
             lis[i] = document.createElement("li");
             lis[i].innerText = snakeParts.length + i;
             snake.appendChild(lis[i]);
+        }
+    }
+
+    function showOrHideModal(show, newHighScore) {
+        if(show) {
+            let scoreHTML = modal.querySelector(".score");
+            scoreHTML.innerHTML = score;
+            let message = modal.querySelector(".message");
+            if(newHighScore) {
+                message.innerText = messages[1];
+                message.classList.add("high-score");
+            }
+            else {
+                message.innerText = messages[0];
+                message.classList.remove("high-score");
+            }
+            mainContainer.classList.add("opacity-low");
+            modal.classList.remove("display-none");
+        }
+        else {
+            modal.classList.add("display-none");
+            mainContainer.classList.remove("opacity-low");
         }
     }
 });

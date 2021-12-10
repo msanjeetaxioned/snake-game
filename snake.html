@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
+    <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="css/override.css">
     <link rel="stylesheet" href="css/snake.css">
 </head>
@@ -37,6 +38,18 @@
                 <li>16</li>
             </ul>
             <div id="food">Food</div>
+        </div>
+    </div>
+    <div id="modal" class="display-none">
+        <div class="modal-container">
+            <div class='modal-content'>
+                <span class="score-heading">Your Score</span>
+                <span class="score">10</span>
+                <span class="message">New High Score!</span>
+            </div>
+            <div class="restart-button">
+                <a href="#FIXME" title="Restart">Restart</a>
+            </div>
         </div>
     </div>
     <script src="js/snake.js"></script>
