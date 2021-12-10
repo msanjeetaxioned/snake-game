@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const startPos = {top: 200, left: 0};
 
     let score = 0;
+    let highScore = localStorage.getItem("snake-game-high-score") ? parseInt(localStorage.getItem("snake-game-high-score")) : 0;
     let currentDirection = "right";
 
     const mainContainer = document.querySelector("#main-container");
@@ -14,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const snake = snakeContainer.querySelector("#snake");
     const stats = mainContainer.querySelector(".stats");
     const currentScoreHTML = stats.querySelectorAll("span")[0];
+    const highScoreHTML = stats.querySelectorAll("span")[1];
+
+    highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
     
     let food = snakeContainer.querySelector("#food");
     setNewFood();
@@ -55,6 +59,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
         for(let i = 1; i < snakeParts.length; i++) { // Check Snake Collision
             if(checkSnakeCollision(snakeParts[0], snakeParts[i])) {
                 clearInterval(interval);
+                if(score > highScore) {
+                    highScore = score;
+                    highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
+                    localStorage.setItem("snake-game-high-score", highScore);
+                }
             }
         }
         if(checkCollisionWithFood()) { // Check Collision with Food
