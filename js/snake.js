@@ -52,13 +52,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     let interval = setInterval(function() {
-        if(checkCollisionWithFood()) {
+        for(let i = 1; i < snakeParts.length; i++) { // Check Snake Collision
+            if(checkSnakeCollision(snakeParts[0], snakeParts[i])) {
+                clearInterval(interval);
+            }
+        }
+        if(checkCollisionWithFood()) { // Check Collision with Food
             setNewFood();
             currentScoreHTML.innerHTML = `<small>Current Score: </small> ${++score}`;
             increaseSnakeSize();
         }
         snakeParts = snake.querySelectorAll("li");
-        for(i = snakeParts.length - 1; i >= 0; i--) {
+        for(let i = snakeParts.length - 1; i >= 0; i--) {
             if(i == 0) {
                 if(currentDirection == "right") {
                     if(parseInt(snakeParts[i].style.left) + positionIncrement >= snakeContainerDimensions.width) {
@@ -102,6 +107,16 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     function getRandomIntegerBetweenMixAndMax(min, max) {
         return Math.floor(Math.random() * (max - min + 1) ) + min;
+    }
+
+    function checkSnakeCollision(firstPart, secondPart) {
+        let firstPartRect = firstPart.getBoundingClientRect();
+        let secondPartRect = secondPart.getBoundingClientRect();
+
+        if(firstPartRect.left == secondPartRect.left && firstPartRect.top == secondPartRect.top) {
+            return true;
+        }
+        return false;
     }
 
     function setNewFood() {
