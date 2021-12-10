@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
                         }
                     }
                     else if(currentDirection == "down") {
-                        if(parseInt(snakeParts[i].style.top) >= snakeContainerDimensions.height) {
+                        if(parseInt(snakeParts[i].style.top) >= (snakeContainerDimensions.height-snakePartSize.height)) {
                             snakeParts[i].style.top = "0px";
                         }
                         else {
