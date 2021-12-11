@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
         }
         currentDirection = "right";
         score = 0;
+        currentScoreHTML.innerHTML = `<small>Current Score: </small> ${score}`;
         setNewFood();
 
         // Set Individual Snake Parts Starting Position 
