@@ -35,31 +35,46 @@ body { font-family: 'Courier New', Courier, monospace; }
     width: 1004px;
     height: 504px;
     border: 2px solid black;
+    margin-bottom: 15px;
     position: relative;
+    z-index: 1;
     background: #d3d3d3;
     overflow: hidden;
 }
 
 #snake {
-    height: 5px;
+    height: 10px;
     display: flex;
     font-size: 0;
 }
 
 #snake > li {
-    width: 5px;
-    height: 5px;
+    width: 10px;
+    height: 10px;
     position: absolute;
-    background: #008000;
+    z-index: 2;
+    background: #2ff74e;
     font-size: 0;
+}
+
+#snake > li:first-child { 
+    z-index: 3;
+    background: #008000; 
 }
 
 #food {
     width: 10px;
     height: 10px;
     position: absolute;
+    z-index: 4;
     background: #ff0000;
     font-size: 0;
+}
+
+.note { 
+    color: #808080;
+    font-size: 16px;
+    text-align: center;
 }
 
 #modal {

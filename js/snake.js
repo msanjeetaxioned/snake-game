@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', function(event) {
     const snakeContainerDimensions = {width: 1000, height: 500};
-    const snakePartSize = {width: 5, height: 5};
+    const snakePartSize = {width: 10, height: 10};
     const foodSize = 10;
-    const positionIncrement = 5;
+    const positionIncrement = 10;
     const directions = ["left", "right", "up", "down"];
     const startPos = {top: 200, left: 0};
     const messages = ["Nice Try!", "Congrats!! You now have a new High Score!!"];
 
+    let baseIntervalTime;
+    let level;
     let score;
     //localStorage.setItem("snake-game-high-score", 0);
     let highScore = localStorage.getItem("snake-game-high-score") ? parseInt(localStorage.getItem("snake-game-high-score")) : 0; // Get High Score if it exists in Local Storage
@@ -18,9 +20,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const snakeContainer = mainContainer.querySelector("#snake-game-container");
     const snake = snakeContainer.querySelector("#snake");
     const stats = mainContainer.querySelector(".stats");
-    const currentScoreHTML = stats.querySelectorAll("span")[0];
+    const levelHTML = stats.querySelectorAll("span")[0];
+    const currentScoreHTML = stats.querySelectorAll("span")[1];
 
-    const highScoreHTML = stats.querySelectorAll("span")[1]; // Show High Score
+    const highScoreHTML = stats.querySelectorAll("span")[2]; // Show High Score
     highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
     
     let food = snakeContainer.querySelector("#food"); 
@@ -68,6 +71,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
             snakeParts = snake.querySelectorAll("li");
         }
         currentDirection = "right";
+        level = 0;
+        levelHTML.innerHTML = `<small>Level: </small>${level}`;
+        baseIntervalTime = 100;
         score = 0;
         currentScoreHTML.innerHTML = `<small>Current Score: </small> ${score}`;
         setNewFood();
@@ -78,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
             snakeParts[i].style.top = startPos.top + "px";
         }
 
-        // Move Snake every 40ms
+        // Move Snake
         let interval = setInterval(function() {
             for(let i = 1; i < snakeParts.length; i++) { // Check Snake Collision
                 if(checkSnakeCollision(snakeParts[0], snakeParts[i])) {
@@ -98,6 +104,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
             if(checkCollisionWithFood()) { // Check Collision with Food
                 setNewFood();
                 currentScoreHTML.innerHTML = `<small>Current Score: </small> ${++score}`;
+                let newLevel = Math.floor(score/10); 
+                if(newLevel <= 10) {
+                    if(level < newLevel) {
+                        level = newLevel;
+                        levelHTML.innerHTML = `<small>Level: </small>${level}`;
+                        baseIntervalTime = 100 * (1 - 0.05 * level);
+                    }
+                }
                 increaseSnakeSize();
             }
             snakeParts = snake.querySelectorAll("li");
@@ -141,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     snakeParts[i].style.top = snakeParts[i-1].style.top;
                 }
             }
-        }, 40);
+        }, baseIntervalTime);
     }
 
     function getRandomIntegerBetweenMixAndMax(min, max) {
@@ -177,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     function increaseSnakeSize() {
-        let lis = [], number = 4;
+        let lis = [], number = 2;
         for(let i = 1; i <= number; i++) {
             lis[i] = document.createElement("li");
             lis[i].innerText = snakeParts.length + i;
