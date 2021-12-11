@@ -5,12 +5,12 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const positionIncrement = 10;
     const directions = ["left", "right", "up", "down"];
     const startPos = {top: 200, left: 0};
-    const messages = ["Nice Try!", "Congrats!! You now have a new High Score!!"];
+    const messages = ["Nice Try!", "Good Job! You Equalled the Highest Score","Congrats!! You now have the Highest Score!!"];
 
     let baseIntervalTime;
     let level;
     let score;
-    //localStorage.setItem("snake-game-high-score", 0);
+    localStorage.setItem("snake-game-high-score", 0);
     let highScore = localStorage.getItem("snake-game-high-score") ? parseInt(localStorage.getItem("snake-game-high-score")) : 0; // Get High Score if it exists in Local Storage
     let currentDirection;
 
@@ -89,14 +89,17 @@ document.addEventListener('DOMContentLoaded', function(event) {
             for(let i = 1; i < snakeParts.length; i++) { // Check Snake Collision
                 if(checkSnakeCollision(snakeParts[0], snakeParts[i])) {
                     clearInterval(interval);
-                    if(score > highScore) {
+                    if(score == highScore) {
+                        showOrHideModal(true, 1);
+                    }
+                    else if(score > highScore) {
                         highScore = score;
-                        showOrHideModal(true, true); // New High Score
+                        showOrHideModal(true, 2); // New High Score
                         highScoreHTML.innerHTML = `<small>Highest Score: </small> ${highScore}`;
                         localStorage.setItem("snake-game-high-score", highScore);
                     }
                     else {
-                        showOrHideModal(true, false); // No New High Score
+                        showOrHideModal(true, 0); // No New High Score
                     }
                     return;
                 }
@@ -204,13 +207,20 @@ document.addEventListener('DOMContentLoaded', function(event) {
             let scoreHTML = modal.querySelector(".score");
             scoreHTML.innerHTML = score;
             let message = modal.querySelector(".message");
-            if(newHighScore) {
-                message.innerText = messages[1];
+            if(newHighScore == 2) {
+                message.innerText = messages[2];
+                message.classList.remove("equal-high-score");
                 message.classList.add("high-score");
+            }
+            else if(newHighScore == 1) {
+                message.innerText = messages[1];
+                message.classList.remove("high-score");
+                message.classList.add("equal-high-score");
             }
             else {
                 message.innerText = messages[0];
                 message.classList.remove("high-score");
+                message.classList.remove("equal-high-score");
             }
             mainContainer.classList.add("opacity-low");
             modal.classList.remove("display-none");

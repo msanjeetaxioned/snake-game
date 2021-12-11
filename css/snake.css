@@ -129,12 +129,15 @@ body { font-family: 'Courier New', Courier, monospace; }
 }
 
 .modal-content > .message::before {
-    content: "\f00c";
     margin-right: 10px;
-    color: #4c6ef5;
     font-family: "Font Awesome 5 Free";
     font-size: 20px;
     font-weight: 900;
+}
+
+.modal-content > .equal-high-score::before {
+    content: "\f00c";
+    color: #4c6ef5;
 }
 
 .modal-content > .high-score::before {
